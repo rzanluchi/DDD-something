@@ -2,9 +2,9 @@ import pytest
 
 from base.test import TestDriver
 from domain.aggregates import TabAggregate
-from domain.commands import OpenTab, PlaceOrder
-from domain.events import TabOpened, DrinksOrdered, FoodOrdered
-from domain.exceptions import TabNotOpen
+from domain.commands import OpenTab, PlaceOrder, MarkDrinksServed
+from domain.events import TabOpened, DrinksOrdered, FoodOrdered, DrinksServed
+from domain.exceptions import TabNotOpen, DrinksNotOutstanding
 
 
 class TestOpenTab(object):
@@ -117,3 +117,52 @@ class TestPlaceFoodAndDrinkOrder(object):
         ), FoodOrdered(
             id=123, items=[self.food_1]
         )])
+
+
+class TestDrinksServed(object):
+
+    def setup_method(self, method):
+        self.test_driver = TestDriver(TabAggregate())
+        self.drink_1 = type("Drink", (), {'is_drink': True, 'id': 26})
+        self.drink_2 = type("Drink", (), {'is_drink': True, 'id': 27})
+
+    def test_place_order(self):
+        def compare(happened_event, expected_event):
+            return all([
+                happened_event.id == expected_event.id,
+                happened_event.item_ids == expected_event.item_ids
+            ])
+        self.test_driver.compare = compare
+        self.test_driver.given([TabOpened(
+            id=123, table_number=42, waiter="John Doe"
+        ), DrinksOrdered(
+            id=123, items=[self.drink_1, self.drink_2]
+        )])
+        self.test_driver.when(MarkDrinksServed(
+            id=123, item_ids=[26, 27]
+        ))
+        self.test_driver.then([DrinksServed(
+            id=123, item_ids=[26, 27]
+        )])
+
+    def test_serve_unordered_drinks_should_throw_exception(self):
+        self.test_driver.given([TabOpened(
+            id=123, table_number=42, waiter="John Doe"
+        )])
+        with pytest.raises(DrinksNotOutstanding):
+            self.test_driver.when(MarkDrinksServed(
+                id=123, item_ids=[26, 27]
+            ))
+
+    def test_serve_drinks_already_served_should_throw_exception(self):
+        self.test_driver.given([TabOpened(
+            id=123, table_number=42, waiter="John Doe"
+        ), DrinksOrdered(
+            id=123, items=[self.drink_1, self.drink_2]
+        ), DrinksServed(
+            id=123, item_ids=[26, 27]
+        )])
+        with pytest.raises(DrinksNotOutstanding):
+            self.test_driver.when(MarkDrinksServed(
+                id=123, item_ids=[26, 27]
+            ))

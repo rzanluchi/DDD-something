@@ -13,7 +13,7 @@ class Aggregate(object):
                 func(ev)
             else:
                 raise Exception("Aggregate {0} can't handle {1} event".format(
-                                self.aggregate, ev))
+                                self, ev))
 
     def handle(self, command):
         if hasattr(self, "handle_{0}".format(command.command_name)):
@@ -21,4 +21,4 @@ class Aggregate(object):
             return func(command)
         else:
             raise Exception("Aggregate {0} can't handle {1} command".format(
-                            self.aggregate, command))
+                            self, command))

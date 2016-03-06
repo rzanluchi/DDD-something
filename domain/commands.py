@@ -15,3 +15,11 @@ class PlaceOrder(object):
         self.command_name = "place_order"
         self.id = id
         self.items = items
+
+
+class MarkDrinksServed(object):
+
+    def __init__(self, id, item_ids):
+        self.command_name = "mark_drinks_served"
+        self.id = id
+        self.item_ids = item_ids

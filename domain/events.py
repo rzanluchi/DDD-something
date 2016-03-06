@@ -33,3 +33,11 @@ class FoodOrdered(object):
         self.event_name = 'food_ordered'
         self.id = id
         self.items = items
+
+
+class DrinksServed(object):
+
+    def __init__(self, id, item_ids):
+        self.event_name = 'drinks_served'
+        self.id = id
+        self.item_ids = item_ids
