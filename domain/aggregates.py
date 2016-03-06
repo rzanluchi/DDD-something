@@ -9,6 +9,9 @@ class TabAggregate(aggregate.Aggregate):
         super(TabAggregate, self).__init__()
         self.opened = False
         self.outstanding_drinks = []
+        self.outstanding_food = []
+        self.prepared_food = []
+        self.served_items_value = 0
 
     def handle_open_tab(self, command):
         return [events.TabOpened(command.id, command.table_number,
@@ -35,6 +38,13 @@ class TabAggregate(aggregate.Aggregate):
             raise exceptions.DrinksNotOutstanding
         return [events.DrinksServed(id=command.id,
                                     item_ids=command.item_ids)]
+
+    def handle_close_tab(self, command):
+        return [events.TabClosed(
+            id=command.id, amount_paid=command.amount_paid)]
+
+    def apply_tab_closed(self, event):
+        pass
 
     def apply_tab_opended(self, event):
         self.opened = True

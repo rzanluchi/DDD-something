@@ -2,8 +2,9 @@ import pytest
 
 from base.test import TestDriver
 from domain.aggregates import TabAggregate
-from domain.commands import OpenTab, PlaceOrder, MarkDrinksServed
-from domain.events import TabOpened, DrinksOrdered, FoodOrdered, DrinksServed
+from domain.commands import OpenTab, PlaceOrder, MarkDrinksServed, CloseTab
+from domain.events import (TabOpened, DrinksOrdered, FoodOrdered, DrinksServed,
+                           TabClosed)
 from domain.exceptions import TabNotOpen, DrinksNotOutstanding
 
 
@@ -166,3 +167,26 @@ class TestDrinksServed(object):
             self.test_driver.when(MarkDrinksServed(
                 id=123, item_ids=[26, 27]
             ))
+
+
+class TestCloseTab(object):
+
+    def setup_method(self, method):
+        self.test_driver = TestDriver(TabAggregate())
+        self.drink_1 = type("Drink", (), {'is_drink': True, 'id': 26,
+                            "price": 10})
+
+    def test_close_tab(self):
+        self.test_driver.given([TabOpened(
+            id=123, table_number=42, waiter="John Doe"
+        ), DrinksOrdered(
+            id=123, items=[self.drink_1]
+        ), DrinksServed(
+            id=123, item_ids=[26]
+        )])
+        self.test_driver.when(CloseTab(
+            id=123, amount_paid=self.drink_1.price + 2
+        ))
+        self.test_driver.then([TabClosed(
+            id=123, amount_paid=22, order_value=20, tip_value=2
+        )])

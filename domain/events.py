@@ -41,3 +41,13 @@ class DrinksServed(object):
         self.event_name = 'drinks_served'
         self.id = id
         self.item_ids = item_ids
+
+
+class TabClosed(object):
+
+    def __init__(self, id, amount_paid, order_value, tip_value):
+        self.event_name = 'tab_closed'
+        self.id = id
+        self.amount_paid = amount_paid
+        self.order_value = order_value
+        self.tip_value = tip_value
