@@ -1,0 +1,4 @@
+
+
+class TabNotOpen(Exception):
+    pass

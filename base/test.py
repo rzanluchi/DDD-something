@@ -7,17 +7,14 @@ class TestDriver(object):
 
     def given(self, events=[]):
         self.apply_events(self.aggregate, events)
-        return self
 
     def when(self, command):
         self.events = self.aggregate.handle(command)
-        if not self.events:
-            raise Exception("Aggregate {0} can't handle {1} command".format(
-                            self.aggregate, command))
-        return self
 
     def then(self, expected_events=[]):
-        if len(self.events) == len(expected_events):
+        if not self.events and expected_events:
+            raise Exception("There are no event produceed")
+        elif len(self.events) == len(expected_events):
             for i in range(len(self.events)):
                 assert self.compare(self.events[i], expected_events[i])
         else:

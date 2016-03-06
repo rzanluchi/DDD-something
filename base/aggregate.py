@@ -7,11 +7,18 @@ class Aggregate(object):
         self.events_loaded = 0
 
     def apply_events(self, events):
-        pass
+        for ev in events:
+            if hasattr(self, "apply_{0}".format(ev.event_name)):
+                func = getattr(self, "apply_{0}".format(ev.event_name))
+                func(ev)
+            else:
+                raise Exception("Aggregate {0} can't handle {1} event".format(
+                                self.aggregate, ev))
 
     def handle(self, command):
         if hasattr(self, "handle_{0}".format(command.command_name)):
             func = getattr(self, "handle_{0}".format(command.command_name))
             return func(command)
         else:
-            return None
+            raise Exception("Aggregate {0} can't handle {1} command".format(
+                            self.aggregate, command))
