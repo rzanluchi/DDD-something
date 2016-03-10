@@ -25,6 +25,14 @@ class MarkDrinksServed(object):
         self.item_ids = item_ids
 
 
+class MarkFoodServed(object):
+
+    def __init__(self, id, item_ids):
+        self.command_name = "mark_food_served"
+        self.id = id
+        self.item_ids = item_ids
+
+
 class CloseTab(object):
 
     def __init__(self, id, amount_paid):

@@ -43,6 +43,14 @@ class DrinksServed(object):
         self.item_ids = item_ids
 
 
+class FoodServed(object):
+
+    def __init__(self, id, item_ids):
+        self.event_name = 'food_served'
+        self.id = id
+        self.item_ids = item_ids
+
+
 class TabClosed(object):
 
     def __init__(self, id, amount_paid, order_value, tip_value):
