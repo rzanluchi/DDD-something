@@ -1,5 +1,3 @@
-
-
 class TabOpened(object):
 
     def __init__(self, id, table_number, waiter):
