@@ -38,8 +38,8 @@ class OpenTabReadModel(read_model.ReadModel):
 
         return result
 
-    def tab_for_table(self, table_id):
-        return self.todo_dict[table_id]
+    def tab_for_table(self, tab_id):
+        return self.todo_dict[tab_id]
 
     def apply_tab_opened(self, event):
         self.todo_dict[event.id] = dto.TabDTO(
@@ -56,14 +56,12 @@ class OpenTabReadModel(read_model.ReadModel):
         self.todo_dict[event.id].items_to_serve += event.items
 
     def apply_drinks_served(self, event):
-        items_to_serve = self.todo_dict[event.id].items_to_serve
         self.todo_dict[event.id].items_to_serve = \
             filter(lambda x: x.id not in event.item_ids)
         self.todo_dict[event.id].served_items = \
             filter(lambda x: x.id in event.item_ids)
 
     def apply_food_served(self, event):
-        items_to_serve = self.todo_dict[event.id].items_to_serve
         self.todo_dict[event.id].items_to_serve = \
             filter(lambda x: x.id not in event.item_ids)
         self.todo_dict[event.id].served_items = \

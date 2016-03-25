@@ -1,14 +1,14 @@
 import pytest
 
 from base.test import TestDriver
-from domain.aggregates import TabAggregate
-from domain.commands import (OpenTab, PlaceOrder, MarkDrinksServed, CloseTab,
-                             MarkFoodServed)
-from domain.events import (TabOpened, DrinksOrdered, FoodOrdered, DrinksServed,
-                           TabClosed, FoodServed)
-from domain.exceptions import (TabNotOpen, DrinksNotOutstanding,
-                               FoodNotOutstanding, MustPayEnough,
-                               DrinksUnserved, FoodUnserved)
+from tab.domain.aggregates import TabAggregate
+from tab.domain.commands import (OpenTab, PlaceOrder, MarkDrinksServed,
+                                 CloseTab, MarkFoodServed)
+from tab.domain.events import (TabOpened, DrinksOrdered, FoodOrdered,
+                               DrinksServed, TabClosed, FoodServed)
+from tab.exceptions import (TabNotOpen, DrinksNotOutstanding,
+                            FoodNotOutstanding, MustPayEnough,
+                            DrinksUnserved, FoodUnserved)
 
 
 class TestOpenTab(object):

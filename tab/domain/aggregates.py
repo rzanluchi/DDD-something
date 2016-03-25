@@ -1,6 +1,6 @@
 from base import aggregate
-from domain import events
-from domain import exceptions
+from tab import exceptions
+from tab.domain import events
 
 
 class TabAggregate(aggregate.Aggregate):
