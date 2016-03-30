@@ -1,7 +1,7 @@
 class TabOpened(object):
 
     def __init__(self, id, table_number, waiter):
-        self.event_name = 'tab_opended'
+        self.event_name = 'tab_opened'
         self.id = id
         self.table_number = table_number
         self.waiter = waiter
@@ -9,12 +9,12 @@ class TabOpened(object):
 
 class OrderedItem(object):
 
-    def __init__(self, menu_number, description, is_drink, price):
+    def __init__(self, menu_number, description, price, is_drink):
         self.event_name = 'ordered_item'
         self.menu_number = menu_number
         self.description = description
-        self.is_drink = is_drink
         self.price = price
+        self.is_drink = is_drink
 
 
 class DrinksOrdered(object):

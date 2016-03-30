@@ -4,6 +4,7 @@ from tab.domain import events
 
 
 class TabAggregate(aggregate.Aggregate):
+    name = "tab_aggregate"
 
     def __init__(self):
         super(TabAggregate, self).__init__()
@@ -59,7 +60,7 @@ class TabAggregate(aggregate.Aggregate):
             tip_value=command.amount_paid - self.served_items_value)
         ]
 
-    def apply_tab_opended(self, event):
+    def apply_tab_opened(self, event):
         self.opened = True
 
     def apply_drinks_ordered(self, event):

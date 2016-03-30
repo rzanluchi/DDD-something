@@ -1,5 +1,5 @@
 from base import read_model
-from domain import dto
+from tab.repository import dto
 
 
 class ChefReadModel(read_model.ReadModel):
@@ -40,6 +40,9 @@ class OpenTabReadModel(read_model.ReadModel):
 
     def tab_for_table(self, tab_id):
         return self.todo_dict[tab_id]
+
+    def active_table_numbers(self):
+        return [tab.table_number for id, tab in self.todo_dict.items()]
 
     def apply_tab_opened(self, event):
         self.todo_dict[event.id] = dto.TabDTO(
